@@ -11,3 +11,151 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum Role {
+  SEEKER
+  EMPLOYER
+  ADMIN
+}
+
+model User {
+  id            String        @id @default(ulid())
+  name          String
+  email         String        @unique
+  emailVerified DateTime?
+  role          Role          @default(SEEKER)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  company       Company?
+  applicant     Applicant?
+  applications  Application[]
+}
+
+model Applicant {
+  id     String @id @default(ulid())
+  userId String @unique @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  headline String?
+  bio      String?
+  skills   String[]
+  location String?
+
+  resumeUrl      String? @map("resume_url")
+  resumeFileName String? @map("resume_file_name")
+  linkedInUrl    String? @map("linked_in_url")
+  githubUrl      String? @map("github_url")
+  portfolioUrl   String? @map("portfolio_url")
+
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("applicants")
+}
+
+enum CompanySize {
+  STARTUP // 1-10
+  SMALL // 11-50
+  MEDIUM // 51-200
+  LARGE // 201-1000
+  ENTERPRISE // 1001+
+}
+
+model Company {
+  id      String @id @default(ulid())
+  ownerId String @unique
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  name        String
+  slug        String       @unique
+  logoURL     String?      @map("logo_url")
+  website     String?
+  size        CompanySize?
+  location    String?
+  industry    String?
+  description String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  jobs      Job[]
+
+  @@map("companies")
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  FREE_LANCE
+  INTERNSHIP
+  REMOTE
+}
+
+enum ExperienceLevel {
+  ENTRY
+  MID
+  SENIOR
+  LEAD
+  EXECUTIVE
+}
+
+enum JobStatus {
+  DRAFT
+  ACTIVE
+  CLOSED
+  EXPIRED
+}
+
+model Job {
+  id          String  @id @default(ulid())
+  companyId   String  @map("company_id")
+  company     Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title       String
+  slug        String
+  description String?
+  type        JobType
+
+  location        String?
+  requirements    String?
+  experienceLevel ExperienceLevel @map("experience_level")
+  category        String
+  salaryMin       Int?            @map("salary_min")
+  salaryMax       Int?            @map("salary_max")
+  salaryCurrency  String          @default("USD") @map("salary_currency")
+  status          JobStatus       @default(DRAFT)
+  featured        Boolean         @default(false)
+  applications    Application[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([status, createdAt])
+  @@index([category])
+  @@map("jobs")
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWING
+  SHORTLISTED
+  INTERVIEW
+  OFFER
+  REJECTED
+  WITHDRAWN
+}
+
+model Application {
+  id          String            @id @default(cuid())
+  jobId       String            @map("job_id")
+  job         Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  applicantId String            @map("applicant_id")
+  applicant   User              @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+  coverLetter String?           @map("cover_letter")
+  resumeUrl   String?           @map("resume_url")
+  status      ApplicationStatus @default(PENDING)
+  notes       String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@unique([jobId, applicantId]) // One application per job per user
+  @@map("applications")
+}
