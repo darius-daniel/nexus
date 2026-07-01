@@ -61,14 +61,14 @@ export default function Home() {
 
       {/* Hero */}
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 flex flex-col items-center brightness-90 bg-[url('/assets/images/christina-wocintechchat-com-m-eF7HN40WbAQ-unsplash.jpg')] bg-cover bg-center bg-no-repeat">
-          <div className="container py-4 md:py-8 lg:py-12 xl:py-16 md:px-6 backdrop-blur-xs backdrop-brightness-90 rounded-xl">
+        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 flex flex-col items-center bg-[url('/assets/images/christina-wocintechchat-com-m-eF7HN40WbAQ-unsplash.jpg')] bg-cover bg-center bg-no-repeat">
+          <div className="container">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2 text-muted p-16 rounded-2xl">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
                   Connect with your next opportunity
                 </h1>
-                <p className="mx-auto max-w-[700px] md:text-xl text-shadow-lg">
+                <p className="mx-auto max-w-[700px] md:text-xl">
                   The modern job board for seekers and employers. Find your
                   dream job or post openings today.
                 </p>
