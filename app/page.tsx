@@ -165,14 +165,14 @@ export default function Home() {
         </section>
 
         {/* CTA */}
-        <section className="w-full py-12 md:py-24 lg:py-32 flex flex-col items-center">
+        <section className="w-full py-12 md:py-24 lg:py-32 flex flex-col items-center bg-[url('/assets/images/kanhaiya-sharma-T_l246EK19I-unsplash.jpg')] bg-no-repeat bg-cover bg-center">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                   Ready to get started?
                 </h2>
-                <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                <p className="max-w-[600px] text-secondary md:text-xl">
                   Join thousands of job seekers and employers already using
                   Nexus.
                 </p>
@@ -181,7 +181,7 @@ export default function Home() {
                 <Button className="w-full" size="lg" asChild>
                   <Link href="/register">Create an account</Link>
                 </Button>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-secondary">
                   Already have an account?{" "}
                   <Link href="/login" className="underline underline-offset-2">
                     Log in
