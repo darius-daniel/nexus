@@ -5,7 +5,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  output   = "../lib/generated/prisma"
 }
 
 datasource db {
@@ -29,6 +29,8 @@ model User {
   company       Company?
   applicant     Applicant?
   applications  Application[]
+
+  @@map("users")
 }
 
 model Applicant {
