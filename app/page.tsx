@@ -18,12 +18,14 @@ export default function Home() {
       {/* Navbar */}
       <nav className=" sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <div className="container min-w-full flex h-16 items-center px-8">
-          <div className="mr-4 hidden md:flex">
+          <div className="mr-4 hidden md:flex w-full items-center relative">
+            {/* Logo */}
             <Link href="/" className="mr-6 flex items-center space-x-2">
               <Briefcase className="size-6" />
               <span className="font-bold">Nexus</span>
             </Link>
-            <nav className="flex items-center space-x-6 text-sm font-medium">
+            {/* Center Navigation */}
+              <nav className="absolute left-1/2 -translate-x-1/2 flex items-center space-x-6 text-sm font-medium">
               <Link
                 href="/jobs"
                 className="transition-colors hover:text-foreground/80 text-foreground/60"
@@ -53,7 +55,7 @@ export default function Home() {
                 <Link href="/login">Log in</Link>
               </Button>
               <Button asChild>
-                <Link href="/register">Sign up</Link>
+                <Link href="/signup">Sign up</Link>
               </Button>
             </nav>
           </div>
@@ -179,7 +181,7 @@ export default function Home() {
               </div>
               <div className="w-full max-w-sm space-y-2">
                 <Button className="w-full" size="lg" asChild>
-                  <Link href="/register">Create an account</Link>
+                  <Link href="/signup">Create an account</Link>
                 </Button>
                 <p className="text-xs text-secondary">
                   Already have an account?{" "}
