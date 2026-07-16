@@ -12,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import AuthBanner from "./auth-banner";
 
-
 export function SignupForm({
   className,
   ...props
@@ -43,9 +42,11 @@ export function SignupForm({
                 </FieldDescription>
               </Field>
               <Field className="gap-1.5 -mt-4">
-                <Field className="grid grid-cols-2 gap-4">
+                <Field className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field>
-                    <FieldLabel className="-mb-1.5" htmlFor="password">Password</FieldLabel>
+                    <FieldLabel className="-mb-1.5" htmlFor="password">
+                      Password
+                    </FieldLabel>
                     <Input id="password" type="password" required />
                   </Field>
                   <Field>
