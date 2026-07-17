@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import Image from "next/image";
+import AuthBanner from "./auth-banner"
 
 export function LoginForm({
   className,
@@ -90,13 +90,7 @@ export function LoginForm({
               </FieldDescription>
             </FieldGroup>
           </form>
-          <div className="relative hidden bg-muted md:block">
-            <img
-              src="Image/login.png"
-              alt="Image"
-              className="absolute inset-0 w-full h-full object-cover dark:brightness-[0.2] dark:grayscale"
-            />
-          </div>
+          <AuthBanner />
         </CardContent>
       </Card>
       <FieldDescription className="px-6 text-center">

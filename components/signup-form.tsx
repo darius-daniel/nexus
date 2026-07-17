@@ -1,15 +1,16 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import Link from "next/link"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import AuthBanner from "./auth-banner";
 
 export function SignupForm({
   className,
@@ -27,7 +28,7 @@ export function SignupForm({
                   Enter your email below to create your account
                 </p>
               </div>
-              <Field>
+              <Field className="gap-1.5 -mt-4">
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
@@ -35,29 +36,31 @@ export function SignupForm({
                   placeholder="m@example.com"
                   required
                 />
-                <FieldDescription>
+                <FieldDescription className="text-xs">
                   We&apos;ll use this to contact you. We will not share your
                   email with anyone else.
                 </FieldDescription>
               </Field>
-              <Field>
-                <Field className="grid grid-cols-2 gap-4">
+              <Field className="gap-1.5 -mt-4">
+                <Field className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field>
-                    <FieldLabel htmlFor="password">Password</FieldLabel>
+                    <FieldLabel className="-mb-1.5" htmlFor="password">
+                      Password
+                    </FieldLabel>
                     <Input id="password" type="password" required />
                   </Field>
                   <Field>
-                    <FieldLabel htmlFor="confirm-password">
+                    <FieldLabel className="-mb-1.5" htmlFor="confirm-password">
                       Confirm Password
                     </FieldLabel>
                     <Input id="confirm-password" type="password" required />
                   </Field>
                 </Field>
-                <FieldDescription>
+                <FieldDescription className="text-xs">
                   Must be at least 8 characters long.
                 </FieldDescription>
               </Field>
-              <Field>
+              <Field className="-mt-4">
                 <Button type="submit">Create Account</Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
@@ -83,7 +86,7 @@ export function SignupForm({
                   <span className="sr-only">Sign up with Google</span>
                 </Button>
                 <Button variant="outline" type="button">
-                   <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
@@ -98,13 +101,7 @@ export function SignupForm({
               </FieldDescription>
             </FieldGroup>
           </form>
-          <div className="relative hidden bg-muted md:block">
-            <img
-              src="Image/login.png"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-left dark:brightness-[0.2] dark:grayscale"
-            />
-          </div>
+          <AuthBanner />
         </CardContent>
       </Card>
       <FieldDescription className="px-6 text-center">
@@ -112,5 +109,5 @@ export function SignupForm({
         and <a href="#">Privacy Policy</a>.
       </FieldDescription>
     </div>
-  )
+  );
 }
