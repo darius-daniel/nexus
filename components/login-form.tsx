@@ -1,3 +1,7 @@
+"use client"
+
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -11,16 +15,42 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import AuthBanner from "./auth-banner"
+import { loginSchema } from "@/lib/validations/auth"
+import type { z } from "zod"
+
+
+type FormValues = z.infer<typeof loginSchema>
+
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const onSubmit = async (data: FormValues) => {
+    // TODO: Integrate with your authentication service here
+    console.log(data)
+  }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>({
+    resolver: zodResolver(loginSchema), // Bind Zod schema to RHF
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+
+  })
+
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}> {/* Triggers Zod validation on submit */}
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Welcome back...</h1>
@@ -34,8 +64,14 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  required
+                  aria-invalid={!!errors.email}
+                  {...register("email")}
                 />
+                {errors.email && (
+                  <FieldDescription className="text-destructive">
+                    {errors.email.message}
+                  </FieldDescription>
+                )}
               </Field>
               <Field>
                 <div className="flex items-center">
@@ -47,10 +83,22 @@ export function LoginForm({
                     Forgot your password?
                   </Link>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  aria-invalid={!!errors.password}
+                  {...register("password")}
+                />
+                {errors.password && (
+                  <FieldDescription className="text-destructive">
+                    {errors.password.message}
+                  </FieldDescription>
+                )}
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Signing in..." : "Login"}
+                </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with

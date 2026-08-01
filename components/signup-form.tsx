@@ -1,26 +1,53 @@
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+"use client"
+
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import AuthBanner from "./auth-banner";
+} from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import Link from "next/link"
+import AuthBanner from "./auth-banner"
+import { signupSchema } from "@/lib/validations/auth"
+import type { z } from "zod"
+
+type FormValues = z.infer<typeof signupSchema>
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const onSubmit = async (data: FormValues) => {
+    // TODO: Integrate with your authentication service here
+    console.log(data)
+  }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>({
+    resolver: zodResolver(signupSchema), // Bind Zod schema to RHF
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  })
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}> {/* Triggers Zod validation on submit */}
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Create your account</h1>
@@ -34,12 +61,18 @@ export function SignupForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  required
+                  aria-invalid={!!errors.email}
+                  {...register("email")}
                 />
                 <FieldDescription className="text-xs">
-                  We&apos;ll use this to contact you. We will not share your
-                  email with anyone else.
+                  {/* We&apos;ll use this to contact you. We will not share your
+                  email with anyone else. */}
                 </FieldDescription>
+                {errors.email && (
+                  <FieldDescription className="text-destructive">
+                    {errors.email.message}
+                  </FieldDescription>
+                )}
               </Field>
               <Field className="gap-1.5 -mt-4">
                 <Field className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -47,21 +80,43 @@ export function SignupForm({
                     <FieldLabel className="-mb-1.5" htmlFor="password">
                       Password
                     </FieldLabel>
-                    <Input id="password" type="password" required />
+                    <Input
+                      id="password"
+                      type="password"
+                      aria-invalid={!!errors.password}
+                      {...register("password")}
+                    />
+                    {errors.password && (
+                      <FieldDescription className="text-destructive">
+                        {errors.password.message}
+                      </FieldDescription>
+                    )}
                   </Field>
                   <Field>
                     <FieldLabel className="-mb-1.5" htmlFor="confirm-password">
                       Confirm Password
                     </FieldLabel>
-                    <Input id="confirm-password" type="password" required />
+                    <Input
+                      id="confirm-password"
+                      type="password"
+                      aria-invalid={!!errors.confirmPassword}
+                      {...register("confirmPassword")}
+                    />
+                    {errors.confirmPassword && (
+                      <FieldDescription className="text-destructive">
+                        {errors.confirmPassword.message}
+                      </FieldDescription>
+                    )}
                   </Field>
                 </Field>
                 <FieldDescription className="text-xs">
-                  Must be at least 8 characters long.
+                  {/* Must be at least 8 characters long. */}
                 </FieldDescription>
               </Field>
               <Field className="-mt-4">
-                <Button type="submit">Create Account</Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Creating Account..." : "Create Account"}
+                </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
@@ -97,7 +152,7 @@ export function SignupForm({
                 </Button>
               </Field>
               <FieldDescription className="text-center">
-                Already have an account? <Link href="/login">Sign in</Link>
+                Already have an account? <Link href="/login">Login</Link>
               </FieldDescription>
             </FieldGroup>
           </form>
@@ -105,8 +160,8 @@ export function SignupForm({
         </CardContent>
       </Card>
       <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        By clicking continue, you agree to our <Link href="/sevices">Terms of Service</Link>{" "}
+        and <Link href="/policies">Privacy Policy</Link>.
       </FieldDescription>
     </div>
   );
